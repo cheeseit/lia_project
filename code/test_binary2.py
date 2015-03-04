@@ -21,8 +21,15 @@ post = {"test": "testzor",
         "image": b_imagestring}
 posts = db.posts
 
-post_id = posts.insert(post)
-print post_id
+#post_id = posts.insert(post)
+mycursor = posts.find()
+#print post_id
+print mycursor.count()
+
+for i in mycursor:
+        retrieve =  StringIO(i["image"])
+        image_retrieve = Image.open(retrieve)
+        #print i.get("test")
 
 # print b_imagestring
 # print imagestring
