@@ -5,6 +5,7 @@ from PIL import Image
 from bson import Binary
 from pymongo import MongoClient
 
+
 # connect to mongodb
 client = MongoClient()
 print client.database_names()
@@ -12,23 +13,29 @@ print client.database_names()
 db = client.mydb
 
 imgfile = StringIO()
-img = Image.open("/sne/home/hdermois/Documents/LIA/project/images/image0.bmp")
+img = Image.open("/sne/home/hdermois/Documents/LIA/project/images/image1.bmp")
 img.save(imgfile,"BMP")
 imagestring = imgfile.getvalue()
 b_imagestring = Binary(imagestring)
 
-post = {"test": "testzor",
+post = {"loc": {"type" : "Point", "coordinates" :[49.09141221192625, 14.663380323014103] },
         "image": b_imagestring}
 posts = db.posts
 
 #post_id = posts.insert(post)
 mycursor = posts.find()
 #print post_id
+
+
 print mycursor.count()
 
 for i in mycursor:
         retrieve =  StringIO(i["image"])
-        image_retrieve = Image.open(retrieve)
+        print i.keys()
+        if "loc" in i.keys():
+                print i.get("loc")
+                img = Image.open(retrieve)
+                img.show()
         #print i.get("test")
 
 # print b_imagestring
