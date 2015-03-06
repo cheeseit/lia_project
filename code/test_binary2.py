@@ -17,9 +17,10 @@ img = Image.open("/sne/home/hdermois/Documents/LIA/project/images/image1.bmp")
 img.save(imgfile,"BMP")
 imagestring = imgfile.getvalue()
 b_imagestring = Binary(imagestring)
+#db.posts.createIndex({loc : "2dsphere"})
 
-post = {"loc": {"type" : "Point", "coordinates" :[49.09141221192625, 14.663380323014103] },
-        "image": b_imagestring}
+#post = {"loc": {"type" : "Point", "coordinates" :[49.09141221192625, 14.663380323014103] },"image": b_imagestring}
+post = {"loc": {"type" : "Point", "coordinates" :[49.09141221192625, 14.663380323014103] }}
 posts = db.posts
 
 #post_id = posts.insert(post)
