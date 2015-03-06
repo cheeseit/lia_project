@@ -35,3 +35,6 @@ def create_images(nr_images):
         image = Binary(imagestring)
         images.append(image)
     return images
+
+def create_images_other():
+    pass
