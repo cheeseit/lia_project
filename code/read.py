@@ -7,7 +7,8 @@ from bson.son import SON
 def finding_geolocation_sphere(col, point, distance):
 
     #temp = { "loc" : { "near" :{ "geometry" : point }, "maxDinstance" : distance } }
-    temp = {"loc":{"$geoWithin":{"$centerSphere":[point["coordinates"],distance]}}}
+    # Radius in kilometers.
+    temp = {"loc":{"$geoWithin":{"$centerSphere":[point["coordinates"], (distance / 3959) * 1609]}}}
     print temp
 
     cursor = col.find(temp)

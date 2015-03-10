@@ -8,8 +8,11 @@ from PIL import Image
 from bson import Binary
 from pymongo import MongoClient
 
-def create_insert_statement(loc, image):
-    temp = {"loc": {"type" : "Point", "coordinates" : loc}, "image" : image}
+def insert_location(loc, image=""):
+    if image:
+        temp = {"loc": {"type" : "Point", "coordinates" : loc}, "image" : image}
+    else :
+        temp = {"loc": {"type" : "Point", "coordinates" : loc} }
     return temp
 # def convert_image_to_binary(image):
 #     imgfile = StringIO()
@@ -17,6 +20,7 @@ def create_insert_statement(loc, image):
 #     img.save(imgfile,"BMP")
 #     imagestring = imgfile.getvalue()
 #     return Binary(imagestring)
+
 
 def connect_db(db_name):
     client = MongoClient()
