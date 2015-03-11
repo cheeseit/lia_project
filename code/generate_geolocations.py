@@ -56,11 +56,9 @@ def create_random_points(nr_p, left_corner, right_corner):
 
 #points in meters
 def points_in_radius (nr_p, point, radius):
-    print point
-    startlon = point[1]
-    startlat = point[0]
+    startlon = rad(point[1])
+    startlat = rad(point[0])
     gStartlon=startlon
-    startlon=rad(startlon)
     # mx=circumKm;
     radiusEarth=6372796.924
 
@@ -77,8 +75,8 @@ def points_in_radius (nr_p, point, radius):
     for i in range(nr_p) :
         dist = math.acos(random.random()*cosdif + 1)
         brg = rad360 * random.random()
-        lat=math.asin(sinstartlat*math.cos(dist) + cosstartlat*math.sin(dist)*math.cos(brg))
-        lon=deg(normalizeLongitude(startlon*1 + math.atan2(math.sin(brg)*math.sin(dist)*cosstartlat, math.cos(dist)-sinstartlat*math.sin(lat))))
+        lat = math.asin(sinstartlat * math.cos(dist) + cosstartlat * math.sin(dist) * math.cos(brg))
+        lon = deg(normalizeLongitude(startlon * 1 + math.atan2(math.sin(brg)*math.sin(dist)*cosstartlat, math.cos(dist)-sinstartlat * math.sin(lat))))
         lat = deg(lat)
         dist=round(dist*radiusEarth*10000)/10000
         brg=round(deg(brg)*1000)/1000
