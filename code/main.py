@@ -6,18 +6,20 @@ import insert
 import util as u
 import generate_images as gi
 import sys
-import numpy as np
-import matplotlib.pyplot as plt
 import generate_geolocations as gg
-from pylab import *
 import os
+
+# import numpy as np
+# import matplotlib.pyplot as plt
+#
+# from pylab import *
 
 ran.seed(987654)
 
 #number of nodes
 # central_points = sys.argv[1]
 
-central_points = 50000
+central_points = 10
 
 # amsterdam_left_corner = 52.386212, 4.875950
 # amsterdam_right_corner = 52.359592, 4.915775
@@ -48,8 +50,10 @@ for i,p in enumerate(points):
 if not os.path.exists("./output"):
     os.makedirs("./output")
 f = open("./output/points","w")
+
 for i in cent_points:
     f.write('%f,%f,%s\n' % (i["c_point"][0],i["c_point"][1],i["density"]))
+f.close()
 
 collection = insert.create_database("photo","photos")
 # insert image at each point

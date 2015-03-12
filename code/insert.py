@@ -33,8 +33,7 @@ def create_database(db_name, col_name):
 
 def insert_into_collection(collection, insert, index=""):
     if not index:
-        col.create_index([("loc"), index])
-        col.create_index([("loc"), index])
+        collection.create_index([("loc"), index])
     # This contains a locations and possibly an image
     for i in insert:
         u.insert_location(i["loc"], i["image"])

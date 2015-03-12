@@ -3,6 +3,7 @@ __author__ = 'hdermois'
 from pymongo import MongoClient
 from pymongo import GEOSPHERE
 from bson.son import SON
+import json
 
 def finding_geolocation_sphere(col, point, distance):
 
@@ -11,7 +12,7 @@ def finding_geolocation_sphere(col, point, distance):
     temp = {"loc":{"$geoWithin":{"$centerSphere":[point["coordinates"], (distance / 3959) * (1/1609)]}}}
     print temp
 
-    cursor = col.find(temp)
+    cursor = col.find(temp).explain("executionStats")
     return cursor
 
 def finding_geolocation_closest(col, point, distance):
@@ -24,24 +25,38 @@ def finding_geolocation_closest(col, point, distance):
     return cursor
 
 
-client = MongoClient()
-db = client["photo"]
-col = db.photos
-mycursor = col.find()
-first = mycursor[0]["loc"]
+def finding_geolocation_sphere_coordinates(col, point, distance):
+
+    #temp = { "loc" : { "near" :{ "geometry" : point }, "maxDinstance" : distance } }
+    # Radius in kilometers.
+    temp = {"loc":{"$geoWithin":{"$centerSphere":[point, (distance / 3959.0) * (1/1609.0)]}}}
+    cursor = col.find(temp).explain()
+    return cursor
+
+
+# client = MongoClient()
+# db = client["photo"]
+# col = db.photos
+# mycursor = col.find()
+# first = mycursor[0]["loc"]
+# explain = col.find().explain()
+# print explain.keys()
+# print explain["executionStats"]
 
 
 
-found = finding_geolocation_closest(col, first, 100000)
 
-print first["coordinates"]
 
-for i,f in enumerate(found):
-    print f["loc"]["coordinates"]
-    if i == 100:
-        break
+# found = finding_geolocation_closest(col, first, 100000)
 
-found = finding_geolocation_sphere(col, first,0.01)
-print first["coordinates"]
-for f in found:
-    print f["loc"]["coordinates"]
+# print first["coordinates"]
+#
+# for i,f in enumerate(found):
+#     print f["loc"]["coordinates"]
+#     if i == 100:
+#         break
+#
+# found = finding_geolocation_sphere(col, first,0.01)
+# print first["coordinates"]
+# for f in found:
+#     print f["loc"]["coordinates"]
