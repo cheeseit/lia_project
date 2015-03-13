@@ -4,6 +4,7 @@ import util
 import read
 import insert
 import sys
+import
 
 
 # filename = sys.argv[1]
@@ -14,13 +15,13 @@ write=[]
 s = "point,execution time, returned, keys examined, success,total docs\n"
 write.append(s)
 nr_queries = 10000
-
+radius = 50
 
 temp = ""
 for i,p in enumerate(points):
     if i == nr_queries:
         break
-    output = read.finding_geolocation_sphere_coordinates(collection,p,50)
+    output = read.finding_geolocation_sphere_coordinates(collection,p,radius)
     # print output.explain()
     exe_stats = output["executionStats"]
     # print exe_stats.keys()
