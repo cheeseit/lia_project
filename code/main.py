@@ -8,6 +8,9 @@ import generate_images as gi
 import sys
 import generate_geolocations as gg
 import os
+from pymongo import GEOSPHERE
+from pymongo import GEOHAYSTACK
+
 
 # import numpy as np
 # import matplotlib.pyplot as plt
@@ -34,7 +37,7 @@ for i,p in enumerate(points):
     tmp_point = {}
     tmp_point["c_point"] = p
     if temp >= 90:
-        points = points + gg.points_in_radius(99, p, 50)
+        points = points + gg.points_in_radius(49, p, 50)
         tmp_point["density"] = "very high"
     elif temp >= 70:
         points = points + gg.points_in_radius(19, p, 50)
@@ -55,10 +58,13 @@ for i in cent_points:
     f.write('%f,%f,%s\n' % (i["c_point"][0],i["c_point"][1],i["density"]))
 f.close()
 
-collection = insert.create_database("photo","photos")
+collection = insert.create_collection("photo","photos")
+collection.create_index([("loc",GEOSPHERE)])
+collection.create_index([("pos",GEOHAYSTACK),("direction", 1)],bucketSize=1)
 # insert image at each point
-for p in points:
+for i, p in enumerate(points):
     temp_img = gi.create_images(1)
+
     query = u.insert_location(p,temp_img)
     collection.insert(query)
 

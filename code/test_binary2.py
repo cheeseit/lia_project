@@ -5,10 +5,10 @@ from PIL import Image
 from bson import Binary
 from pymongo import MongoClient
 
-
 # connect to mongodb
 client = MongoClient()
 print client.database_names()
+
 
 db = client.mydb
 

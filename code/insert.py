@@ -25,7 +25,7 @@ from pymongo import GEOHAYSTACK
 #     temp = u.insert_location(l, images[i])
 #     col.insert(temp)
 
-def create_database(db_name, col_name):
+def create_collection(db_name, col_name):
     client = MongoClient()
     db = client[db_name]
     col = db[col_name]
@@ -37,3 +37,12 @@ def insert_into_collection(collection, insert, index=""):
     # This contains a locations and possibly an image
     for i in insert:
         u.insert_location(i["loc"], i["image"])
+
+
+def create_database(db_name):
+    client = MongoClient()
+    db = client[db_name]
+    return db
+
+def insert_with_gridfs(f):
+    pass
