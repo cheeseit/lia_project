@@ -2,7 +2,7 @@ __author__ = 'hdermois'
 
 import util
 import read
-import insert
+import db_util
 import sys
 import os
 from subprocess import call,check_output
@@ -12,7 +12,7 @@ import time
 
 
 points = util.get_central_points_from_file()
-collection = insert.create_database("photo","photos")
+collection = db_util.create_database("photo","photos")
 write=[]
 s = "point,execution time, returned, keys examined, success,total docs\n"
 write.append(s)
@@ -25,7 +25,7 @@ for t in range(times):
     for i,p in enumerate(points):
         if i == nr_queries:
             break
-        output = read.finding_geolocation_sphere_coordinates(collection,p,radius)
+        output = read.finding_geolocation_sphere_coordinates(collection,p,radius).explain()
         # print output.explain()
         exe_stats = output["executionStats"]
         # print exe_stats.keys()

@@ -1,9 +1,9 @@
 __author__ = 'hdermois'
 
 import util
-import insert
+import db_util
 
-collection = insert.create_database("photo","photos")
+collection = db_util.create_database("photo","photos")
 # cursor = collection.find()
 # for c in cursor:
 # collection.update({},{"$set" :{"column4":1}}, multi=True)

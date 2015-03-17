@@ -26,7 +26,7 @@ def finding_geolocation_sphere_coordinates(col, point, distance):
     #temp = { "loc" : { "near" :{ "geometry" : point }, "maxDinstance" : distance } }
     # Radius in kilometers.
     temp = {"loc":{"$geoWithin":{"$centerSphere":[point, (distance / 3959.0) * (1/1609.0)]}}}
-    cursor = col.find(temp).explain()
+    cursor = col.find(temp)
     return cursor
 
 
