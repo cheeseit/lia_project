@@ -24,10 +24,13 @@ ran.seed(987654)
 #number of nodes
 # central_points = sys.argv[1]
 
-central_points = 500
+central_points = 10
 
 # amsterdam_left_corner = 52.386212, 4.875950
 # amsterdam_right_corner = 52.359592, 4.915775
+
+# photo =1 , gridfs =2 ,os_level =3
+db_choice = 1
 
 left_corner = 53.270020, 3.136886
 right_corner = 49.494760, 6.432784
@@ -55,30 +58,32 @@ if not os.path.exists("./output"):
     os.makedirs("./output")
 f = open("./output/points","w")
 
-for i in cent_points:
-    f.write('%f,%f,%s\n' % (i["c_point"][0],i["c_point"][1],i["density"]))
-f.close()
 
 collection = db_util.create_collection(database_name, collection_name)
 collection.create_index([("loc",GEOSPHERE)])
-collection.create_index([("pos",GEOHAYSTACK),("direction", 1)],bucketSize=1)
+collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
 collection.create_index([("pos",GEO2D),("direction", 1)])
 # insert image at each point
 
 
-if collection_name == "photos":
+
+if db_choice == 1:
     for i, p in enumerate(points):
         temp_img = gi.create_images(1)
         query = u.insert_location(p,temp_img)
         collection.insert(query)
-
-elif collection_name == "gridfs":
+        f.write("%s\n" % p)
+    f.close()
+elif db_choice == 2:
     database = db_util.create_database(database_name)
     fs = gridfs.GridFS(database)
     for p in points:
         tmp_image = gi.create_image()
         b = fs.put(tmp_image)
         collection.insert(u.insert_location(p,b))
+
+#elif db_choice == 3:
+
 
 else:
     print "Nothing inserted"
