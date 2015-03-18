@@ -6,8 +6,8 @@ import util
 from cStringIO import StringIO
 from bson import Binary
 
-width = 720
-height = 240
+width = 2000
+height = 1680
 
 def generate_rectangle_points():
     x1 = randint(1,width)
@@ -56,3 +56,18 @@ def save_image_to_file(counter):
 
 def create_images_other():
     pass
+
+def create_images_storage(nr_images,width,height):
+    images = []
+    for i in range(nr_images):
+        image_file = StringIO()
+        im = Image.new("RGB",(width,height))
+        draw = ImageDraw.ImageDraw(im)
+        # Dar shapes
+        generate_shapes(draw)
+        #save image to a stringIOP
+        im.save(image_file,"BMP")
+        imagestring = image_file.getvalue()
+        image = Binary(imagestring)
+        images.append(image)
+    return images

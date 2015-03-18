@@ -40,8 +40,9 @@ def get_central_points_from_file():
     f = open("./output/points")
     points = []
     for l in f:
-        l_split = l.split(",")
-        temp_point = [float(l_split[0]),float(l_split[1])]
+        tmp = l[:-2]
+        l_split = tmp.split(",")
+        temp_point = [float(l_split[0][1:]),float(l_split[1][:])]
         points.append(temp_point)
     return points
 

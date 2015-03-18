@@ -30,6 +30,10 @@ def finding_geolocation_sphere_coordinates(col, point, distance):
     return cursor
 
 
+def finding_geohaystack(db,c_name,point,distance):
+    tmp = {"geoSearch" : c_name ,"search" : {"direction": 1} ,"near": point , "maxDistance" : distance}
+    return db.command(tmp)
+
 # client = MongoClient()
 # db = client["photo"]
 # col = db.photos

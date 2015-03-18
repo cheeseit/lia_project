@@ -24,34 +24,35 @@ ran.seed(987654)
 #number of nodes
 # central_points = sys.argv[1]
 
-central_points = 10
+central_points = 200
 
 # amsterdam_left_corner = 52.386212, 4.875950
 # amsterdam_right_corner = 52.359592, 4.915775
 
 # photo =1 , gridfs =2 ,os_level =3
 db_choice = 1
-
-left_corner = 53.270020, 3.136886
-right_corner = 49.494760, 6.432784
-points = gg.create_random_points(central_points,left_corner, right_corner)
-cent_points = []
-collection_name = "gridfs"
-database_name = "photo"
-#Calculate densities for these points.
-for i,p in enumerate(points):
-    temp = ran.randint(0,99)
-    tmp_point = {}
-    tmp_point["c_point"] = p
-    if temp >= 80:
-        points = points + gg.points_in_radius(19, p, 50)
-        tmp_point["density"] = "high"
-    elif temp >= 50:
-        points = points + gg.points_in_radius(4, p, 50)
-        tmp_point["density"] = "medium"
-    else:
-        tmp_point["density"] = "low"
-    cent_points.append(tmp_point)
+generate_points = 1
+if generate_points:
+    left_corner = 53.270020, 3.136886
+    right_corner = 49.494760, 6.432784
+    points = gg.create_random_points(central_points,left_corner, right_corner)
+    cent_points = []
+    collection_name = "gridfs"
+    database_name = "photo"
+    #Calculate densities for these points.
+    for i,p in enumerate(points):
+        temp = ran.randint(0,99)
+        tmp_point = {}
+        tmp_point["c_point"] = p
+        if temp >= 80:
+            points = points + gg.points_in_radius(19, p, 50)
+            tmp_point["density"] = "high"
+        elif temp >= 50:
+            points = points + gg.points_in_radius(4, p, 50)
+            tmp_point["density"] = "medium"
+        else:
+            tmp_point["density"] = "low"
+        cent_points.append(tmp_point)
 
 
 if not os.path.exists("./output"):
@@ -60,9 +61,10 @@ f = open("./output/points","w")
 
 
 collection = db_util.create_collection(database_name, collection_name)
+collection.create_index([("pos",GEO2D),("direction", 1)])
 collection.create_index([("loc",GEOSPHERE)])
 collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
-collection.create_index([("pos",GEO2D),("direction", 1)])
+
 # insert image at each point
 
 

@@ -12,16 +12,23 @@ import time
 
 
 points = util.get_central_points_from_file()
-collection = db_util.create_database("photo","photos")
+collection = db_util.create_collection("photo","gridfs")
 write=[]
 s = "point,execution time, returned, keys examined, success,total docs\n"
 write.append(s)
 nr_queries = 10000
-radius = 50
-times = 10
+radius = 100
+times = 3
+directory_name = "output2dsphere"
+
+if not os.path.exists("./%s" % directory_name):
+    os.makedirs("./%s" % directory_name)
+
 
 temp = ""
 for t in range(times):
+    util.restart_and_free_mongodb()
+    time.sleep(10)
     for i,p in enumerate(points):
         if i == nr_queries:
             break
@@ -33,11 +40,9 @@ for t in range(times):
         s = "%s,%d,%d,%d,%d,%d\n" % (p,exe_stats["executionTimeMillis"], exe_stats["nReturned"], exe_stats["totalKeysExamined"], exe_stats["executionSuccess"], exe_stats["totalDocsExamined"])
         write.append(s)
 
-    util.write_to_output("./output/result1", write)
+    util.write_to_output("./%s/%s%d" % (directory_name , directory_name, t) , write)
 
 
-    util.restart_and_free_mongodb()
-    time.sleep(10)
 
 # util.write_to_output("./output/%s" % (filename), write)
 #stop mongod;sh -c "sync; echo 3 > /proc/sys/vm/drop_caches";start mongod
