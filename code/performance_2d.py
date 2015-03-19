@@ -12,7 +12,7 @@ import time
 
 
 points = util.get_central_points_from_file()
-collection = db_util.create_collection("photo","gridfs")
+collection = db_util.create_collection("photo","photos")
 
 nr_queries = 10000
 radius = 100

@@ -13,7 +13,7 @@ import time
 
 points = util.get_central_points_from_file()
 database_name = "photo"
-collection_name ="gridfs"
+collection_name ="photos"
 collection = db_util.create_collection(database_name,collection_name)
 database = db_util.create_database(database_name)
 
@@ -38,7 +38,7 @@ for t in range(times):
             break
         output = read.finding_geohaystack(database, collection_name, p, distance)
         stats = output["stats"]
-        s = "%s,%d,%d\n" % (p,stats["time"],stats["n"])
+        s = "%s,%f,%d\n" % (p,stats["time"],stats["n"])
         write.append(s)
 
     util.write_to_output("./%s/%s%d" % (directory_name , directory_name, t) , write)

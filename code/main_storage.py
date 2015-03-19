@@ -25,7 +25,7 @@ ran.seed(987654)
 #number of nodes
 # central_points = sys.argv[1]
 
-central_points = 50
+central_points = 100
 
 # amsterdam_left_corner = 52.386212, 4.875950
 # amsterdam_right_corner = 52.359592, 4.915775
@@ -40,7 +40,7 @@ if generate_points:
     right_corner = 49.494760, 6.432784
     points = gg.create_random_points(central_points,left_corner, right_corner)
     all_points = []
-    collection_name = "gridfs"
+    collection_name = "gridfs1"
     database_name = "photo"
 
     high_counter = 0
@@ -118,8 +118,8 @@ collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.001
 
 if db_choice == 1:
     for i, p in enumerate(all_points):
-        temp_img = gi.create_images_storage(1,float(file_sizes[p["size"]]["w"]),float(file_sizes[p["size"]]["h"]))
-        query = u.insert_location(p,temp_img)
+        temp_img = gi.create_images_storage(1,file_sizes[p["size"]]["w"],file_sizes[p["size"]]["h"])
+        query = u.insert_query_storage(p,temp_img)
         collection.insert(query)
 
 
@@ -127,9 +127,10 @@ elif db_choice == 2:
     database = db_util.create_database(database_name)
     fs = gridfs.GridFS(database)
     for p in all_points:
-        tmp_image = gi.create_image(1,float(file_sizes[p["size"]]["w"]),float(file_sizes[p["size"]]["h"]))
-        b = fs.put(tmp_image)
-        collection.insert(u.insert_location(p,b))
+        tmp_image = gi.create_images_storage(1,file_sizes[p["size"]]["w"],file_sizes[p["size"]]["h"])
+        b = fs.put(tmp_image[0])
+        query = u.insert_query_storage(p,b)
+        collection.insert(query)
 
 elif db_choice == 3:
     if not os.path.exists("/opt/images"):
