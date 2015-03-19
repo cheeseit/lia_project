@@ -13,13 +13,13 @@ import time
 
 points = util.get_central_points_from_file()
 database_name = "photo"
-collection_name ="photos"
+collection_name ="gridfs"
 collection = db_util.create_collection(database_name,collection_name)
 database = db_util.create_database(database_name)
 
 nr_queries = 10000
 distance = 0.00167
-times = 3
+times = 1
 directory_name = "outputhaystack"
 
 if not os.path.exists("./%s" % directory_name):
@@ -28,8 +28,8 @@ if not os.path.exists("./%s" % directory_name):
 
 temp = ""
 for t in range(times):
-    util.restart_and_free_mongodb()
-    time.sleep(10)
+    # util.restart_and_free_mongodb()
+    # time.sleep(10)
     write=[]
     s = "point,execution time,returned nodes\n"
     write.append(s)
@@ -38,6 +38,7 @@ for t in range(times):
             break
         output = read.finding_geohaystack(database, collection_name, p, distance)
         stats = output["stats"]
+
         s = "%s,%f,%d\n" % (p,stats["time"],stats["n"])
         write.append(s)
 

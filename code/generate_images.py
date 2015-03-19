@@ -6,8 +6,8 @@ import util
 from cStringIO import StringIO
 from bson import Binary
 
-width = 2000
-height = 1680
+width = 420
+height = 420
 
 def generate_rectangle_points():
     x1 = randint(1,width)
