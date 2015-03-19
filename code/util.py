@@ -38,16 +38,16 @@ def connect_db(db_name):
 
 
 def write_to_output(file,data):
-    with open(file, "a") as f:
-        for d in data:
-            f.write(d)
+    f = open(file, "w")
+    for d in data:
+        f.write(d)
     f.close
 
 def get_central_points_from_file():
     f = open("./output/cent_points")
     points = []
     for l in f:
-        l_split = l.split[","]
+        l_split = l.split(",")
         temp_point = [float(l_split[0]),float(l_split[1])]
         points.append(temp_point)
     return points

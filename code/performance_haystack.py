@@ -16,9 +16,7 @@ database_name = "photo"
 collection_name ="gridfs"
 collection = db_util.create_collection(database_name,collection_name)
 database = db_util.create_database(database_name)
-write=[]
-s = "point,execution time,returned nodes\n"
-write.append(s)
+
 nr_queries = 10000
 distance = 0.00167
 times = 3
@@ -30,8 +28,11 @@ if not os.path.exists("./%s" % directory_name):
 
 temp = ""
 for t in range(times):
-    # util.restart_and_free_mongodb()
-    # time.sleep(10)
+    util.restart_and_free_mongodb()
+    time.sleep(10)
+    write=[]
+    s = "point,execution time,returned nodes\n"
+    write.append(s)
     for i,p in enumerate(points):
         if i == nr_queries:
             break

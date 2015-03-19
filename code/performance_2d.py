@@ -13,9 +13,7 @@ import time
 
 points = util.get_central_points_from_file()
 collection = db_util.create_collection("photo","gridfs")
-write=[]
-s = "point,execution time, returned, keys examined, success,total docs\n"
-write.append(s)
+
 nr_queries = 10000
 radius = 100
 times = 3
@@ -29,6 +27,9 @@ temp = ""
 for t in range(times):
     util.restart_and_free_mongodb()
     time.sleep(10)
+    write=[]
+    s = "point,execution time, returned, keys examined, success,total docs\n"
+    write.append(s)
     for i,p in enumerate(points):
         if i == nr_queries:
             break
