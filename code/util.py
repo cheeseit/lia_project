@@ -12,7 +12,8 @@ import os
 
 def insert_location(loc, image=""):
     if image:
-        temp = {"loc": {"type" : "Point", "coordinates" : loc}, "image" : image, "pos":{ "lng" : loc[1] , "lat":loc[0]}, "direction":1}
+        temp = {"loc": {"type" : "Point", "coordinates" : loc}, "image" : image,
+                "pos":{ "lng" : loc[1] , "lat":loc[0]}, "direction":1}
     else :
         temp = {"loc": {"type" : "Point", "coordinates" : loc} }
     return temp
@@ -22,6 +23,12 @@ def insert_location(loc, image=""):
 #     img.save(imgfile,"BMP")
 #     imagestring = imgfile.getvalue()
 #     return Binary(imagestring)
+
+def insert_query_storage(point, path):
+    tmp = {"loc": {"type" : "Point", "coordinates" : point["point"]}, "image" : path,
+           "pos":{ "lng" : point["point"][1] , "lat":point["point"][0]},
+           "direction":1 , "density":point["density"], "size":point["size"]}
+    return tmp
 
 
 def connect_db(db_name):
@@ -37,12 +44,11 @@ def write_to_output(file,data):
     f.close
 
 def get_central_points_from_file():
-    f = open("./output/points")
+    f = open("./output/cent_points")
     points = []
     for l in f:
-        tmp = l[:-2]
-        l_split = tmp.split(",")
-        temp_point = [float(l_split[0][1:]),float(l_split[1][:])]
+        l_split = l.split[","]
+        temp_point = [float(l_split[0]),float(l_split[1])]
         points.append(temp_point)
     return points
 

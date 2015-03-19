@@ -24,7 +24,7 @@ ran.seed(987654)
 #number of nodes
 # central_points = sys.argv[1]
 
-central_points = 200
+central_points = 300000
 
 # amsterdam_left_corner = 52.386212, 4.875950
 # amsterdam_right_corner = 52.359592, 4.915775
@@ -57,15 +57,18 @@ if generate_points:
 
 if not os.path.exists("./output"):
     os.makedirs("./output")
-f = open("./output/points","w")
+f = open("./output/cent_points","w")
 
+for p in cent_points:
+    f.write("%s,%s,%s\n" % (p["c_point"][0],p["c_point"][1],p["density"]))
+f.close
 
 collection = db_util.create_collection(database_name, collection_name)
 collection.create_index([("pos",GEO2D),("direction", 1)])
 collection.create_index([("loc",GEOSPHERE)])
 collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
 
-# insert image at each point
+#insert image at each point
 
 
 

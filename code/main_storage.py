@@ -31,8 +31,10 @@ central_points = 50
 # amsterdam_right_corner = 52.359592, 4.915775
 
 # photo =1 , gridfs =2 ,os_level =3
-db_choice = 1
+db_choice = 3
 generate_points = 1
+file_sizes = [{"w":280,"h":240},{"w":720,"h":480},{"w":1000,"h":840},{"w":2000,"h":840},{"w":2000,"h":1680}]
+
 if generate_points:
     left_corner = 53.270020, 3.136886
     right_corner = 49.494760, 6.432784
@@ -105,34 +107,38 @@ for ap in all_points:
     f.write(",".join(tmp)+"\n")
 f.close()
 
-# collection = db_util.create_collection(database_name, collection_name)
-# collection.create_index([("pos",GEO2D),("direction", 1)])
-# collection.create_index([("loc",GEOSPHERE)])
-# collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
-#
-# # insert image at each point
-#
-#
-#
-# if db_choice == 1:
-#     for i, p in enumerate(points):
-#         temp_img = gi.create_images(1)
-#         query = u.insert_location(p,temp_img)
-#         collection.insert(query)
-#         f.write("%s\n" % p)
-#     f.close()
-# elif db_choice == 2:
-#     database = db_util.create_database(database_name)
-#     fs = gridfs.GridFS(database)
-#     for p in points:
-#         tmp_image = gi.create_image()
-#         b = fs.put(tmp_image)
-#         collection.insert(u.insert_location(p,b))
-#
-# elif db_choice == 3:
-#     #oslevel
-#     print "hello"
-#
-#
-# else:
-#     print "Nothing inserted"
+collection = db_util.create_collection(database_name, collection_name)
+collection.create_index([("pos",GEO2D),("direction", 1)])
+collection.create_index([("loc",GEOSPHERE)])
+collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
+
+# insert image at each point
+
+
+
+if db_choice == 1:
+    for i, p in enumerate(all_points):
+        temp_img = gi.create_images_storage(1,float(file_sizes[p["size"]]["w"]),float(file_sizes[p["size"]]["h"]))
+        query = u.insert_location(p,temp_img)
+        collection.insert(query)
+
+
+elif db_choice == 2:
+    database = db_util.create_database(database_name)
+    fs = gridfs.GridFS(database)
+    for p in all_points:
+        tmp_image = gi.create_image(1,float(file_sizes[p["size"]]["w"]),float(file_sizes[p["size"]]["h"]))
+        b = fs.put(tmp_image)
+        collection.insert(u.insert_location(p,b))
+
+elif db_choice == 3:
+    if not os.path.exists("/opt/images"):
+        os.makedirs("/opt/images")
+    for i, p in enumerate(all_points):
+        path = "/opt/images/image%d.bmp" %(i)
+        tmp_image = gi.create_image_to_be_stored(file_sizes[p["size"]]["w"],file_sizes[p["size"]]["h"])
+        tmp_image.save(path, "BMP")
+        collection.insert(u.insert_query_storage(p,path))
+
+else:
+    print "Nothing inserted"

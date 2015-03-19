@@ -71,3 +71,11 @@ def create_images_storage(nr_images,width,height):
         image = Binary(imagestring)
         images.append(image)
     return images
+
+def create_image_to_be_stored(width,height):
+    im = Image.new("RGB",(width,height))
+    draw = ImageDraw.ImageDraw(im)
+    # Dar shapes
+    generate_shapes(draw)
+    #save image to a stringIOP
+    return im
