@@ -6,23 +6,30 @@ from pylab import *
 import generate_geolocations as gg
 
 
-locs = gg.get_locations(100000)
+f = open('/sne/home/hdermois/allpoints','r')
+points = []
+for l in f.readlines():
+    l_split = l.split(",")
+    points.append([float(l_split[0][1:]),float(l_split[1][:-1])])
+
+
+
+
+# for i in locs:
+#     f.write(str(i)+"\n")
+# f.close()
+# # plt.scatter(x,y)
+# # plt.show()
 
 x = []
-for i,l in enumerate(locs) :
+for i,l in enumerate(points) :
     x.append(l[0])
 
 y = []
-for i,l in enumerate(locs):
+for i,l in enumerate(points):
     y.append(l[1])
 
-f = open('/sne/home/hdermois/locations','w')
-for i in locs:
-    f.write(str(i)+"\n")
-f.close()
-# plt.scatter(x,y)
-# plt.show()
 figure()
-hist2d(x,y,bins=100)
+hist2d(y,x,bins=100)
 colorbar()
 show()

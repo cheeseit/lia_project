@@ -15,10 +15,10 @@ from PIL import Image
 
 # filename = sys.argv[1]
 
-collection_name ="gridfs1"
+collection_name ="real"
 database_name = "photo"
 # photo =1 , gridfs =2 ,os_level =3
-db_choice = 3
+db_choice = 1
 
 
 points = util.get_central_points_from_file()
@@ -39,6 +39,7 @@ s_io=StringIO()
 
 
 temp = ""
+output =  ""
 
 for t in range(times):
     util.restart_and_free_mongodb()

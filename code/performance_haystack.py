@@ -38,7 +38,7 @@ for t in range(times):
             break
         output = read.finding_geohaystack(database, collection_name, p, distance)
         stats = output["stats"]
-
+        print stats
         s = "%s,%f,%d\n" % (p,stats["time"],stats["n"])
         write.append(s)
 
