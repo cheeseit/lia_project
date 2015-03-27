@@ -24,7 +24,7 @@ ran.seed(987654)
 #number of nodes
 # central_points = sys.argv[1]
 
-central_points = 300
+central_points = 2000000
 
 # amsterdam_left_corner = 52.386212, 4.875950
 # amsterdam_right_corner = 52.359592, 4.915775
@@ -63,35 +63,35 @@ for p in cent_points:
     f.write("%s,%s,%s\n" % (p["c_point"][0],p["c_point"][1],p["density"]))
 f.close
 
-collection = db_util.create_collection(database_name, collection_name)
-collection.create_index([("pos",GEO2D),("direction", 1)])
-collection.create_index([("loc",GEOSPHERE)])
-collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
-
-#insert image at each point
-
-
-
-if db_choice == 1:
-    for i, p in enumerate(points):
-        temp_img = gi.create_images(1)
-        query = u.insert_location(p,temp_img)
-        collection.insert(query)
-        f.write("%s\n" % p)
-    f.close()
-elif db_choice == 2:
-    database = db_util.create_database(database_name)
-    fs = gridfs.GridFS(database)
-    for p in points:
-        tmp_image = gi.create_image()
-        b = fs.put(tmp_image)
-        collection.insert(u.insert_location(p,b))
-
-#elif db_choice == 3:
-
-
-else:
-    print "Nothing inserted"
+#collection = db_util.create_collection(database_name, collection_name)
+#collection.create_index([("pos",GEO2D),("direction", 1)])
+#collection.create_index([("loc",GEOSPHERE)])
+#collection.create_index([("pos",GEOHAYSTACK),("direction", 1)], bucketSize=0.00167)
+#
+##insert image at each point
+#
+#
+#
+#if db_choice == 1:
+#    for i, p in enumerate(points):
+#        temp_img = gi.create_images(1)
+#        query = u.insert_location(p,temp_img)
+#        collection.insert(query)
+#        f.write("%s\n" % p)
+#    f.close()
+#elif db_choice == 2:
+#    database = db_util.create_database(database_name)
+#    fs = gridfs.GridFS(database)
+#    for p in points:
+#        tmp_image = gi.create_image()
+#        b = fs.put(tmp_image)
+#        collection.insert(u.insert_location(p,b))
+#
+##elif db_choice == 3:
+#
+#
+#else:
+#    print "Nothing inserted"
 
 #TESTSTUFF
 # print len(points)
