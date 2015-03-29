@@ -10,6 +10,7 @@ import numpy as np
 directory= "/sne/home/hdermois/results/"
 onlyfiles = [ f for f in listdir("/sne/home/hdermois/results") if isfile(join("/sne/home/hdermois/results",f)) ]
 
+
 results_2d= []
 results_haystack = []
 
