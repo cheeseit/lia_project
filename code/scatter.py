@@ -6,11 +6,11 @@ from pylab import *
 import generate_geolocations as gg
 
 
-f = open('/sne/home/hdermois/allpoints','r')
+f = open('/home/harm/results/all_points_million','r')
 points = []
 for l in f.readlines():
     l_split = l.split(",")
-    points.append([float(l_split[0][1:]),float(l_split[1][:-1])])
+    points.append([float(l_split[0][1:]),float(l_split[1][:-2])])
 
 
 
@@ -30,6 +30,12 @@ for i,l in enumerate(points):
     y.append(l[1])
 
 figure()
-hist2d(y,x,bins=100)
+hist2d(y,x,bins=50)
+font_size = 16
+plt.xlabel("Longitude",fontsize=font_size)
+plt.ylabel("Latitude", fontsize=font_size)
+plt.tick_params(axis="both",labelsize=font_size)
+plt.title("Coordinate distribution of the 6 million coordinates",fontsize=22)
+
 colorbar()
 show()
