@@ -25,7 +25,8 @@ results_2d= [0,0,0]
 results_haystack = [0,0,0]
 counter_2d = [0,0,0]
 counter_haystack = [0,0,0]
-
+cached_haystack = 0
+cached_2d = 0
 
 print files
 for k in files.keys():
@@ -35,7 +36,8 @@ for k in files.keys():
         for l in file.readlines()[1:]:
             l_split = l.split(",")
             nr_nodes = int(l_split[3])
-            if l_split[2] > 3 and not re.search("haystack",k):
+            if float(l_split[2]) > 3 and not re.search("haystack",k):
+
                 if 1 <= nr_nodes < 5:
                     results_2d[0] +=  + int(l_split[2])
                     counter_2d[0] += 1
@@ -45,7 +47,7 @@ for k in files.keys():
                 else:
                     results_2d[2] = results_2d[2] + int(l_split[2])
                     counter_2d[2] += 1
-            elif l_split[2] > 3:
+            elif float(l_split[2]) > 3:
                 if 1 <= nr_nodes < 5:
                     results_haystack[0] =  results_haystack[0] + float(l_split[2])
                     counter_haystack[0] += 1
@@ -55,16 +57,30 @@ for k in files.keys():
                 else:
                     results_haystack[2] = results_haystack[2] + float(l_split[2])
                     counter_haystack[2] += 1
+            elif re.search("haystack",k):
+                cached_haystack += 1
+            else:
+                cached_2d += 1
 
 
 
 for i,r in enumerate(results_2d):
-    results_2d[i] = r/counter_2d[i]
+    results_2d[i] = r / counter_2d[i]
 for i,r in enumerate(results_haystack):
     results_haystack[i] = r / counter_haystack[i]
 
 print results_2d
 print results_haystack
+print counter_2d
+print counter_haystack
+print cached_2d
+print cached_haystack
+print "Cached 2d : %d" % (cached_2d/3)
+print "Cached haystack : %d" % (cached_haystack/3)
+
+results_haystack = [26,45,99]
+x = [1,5,20]
+
 N=3
 fig = plt.figure()
 ax = fig.add_subplot(111)
@@ -74,15 +90,35 @@ width = 0.4                      # the width of the bars
 font_size = 16
 
 ax.set_ylim(0,2000)
-ax.set_title('Index response time per density', fontsize=22)
-ax.set_ylabel('Repsonse time(ms)', fontsize=font_size)
+ax.set_title('Average query time per density, collection with images', fontsize=22)
+ax.set_ylabel('Average query time (ms)', fontsize=font_size)
 
-xTickMarks = ['Density '+str(i) for i in [1,5,20]]
+xTickMarks = ['Density low', "Density medium", "Density high"]
 ax.set_xticks(ind+width)
 xtickNames = ax.set_xticklabels(xTickMarks)
 plt.setp(xtickNames, fontsize=font_size)
 
 rects1 = ax.bar(ind, results_haystack, width,color='blue')
 rects2 = ax.bar(ind+width, results_2d, width,color='red')
-ax.legend( (rects1[0], rects2[0]), ('Haystack', '2d Sphere') )
+ax.legend( (rects1[0], rects2[0]), ('Haystack', '2d sphere') )
+plt.show()
+
+plt.plot(x,results_2d)
+
+#make it nice
+font_size = 16
+plt.xlabel("Densities",fontsize=font_size)
+plt.ylabel("Time(ms)", fontsize=font_size)
+plt.tick_params(axis="both",labelsize=font_size)
+plt.title("Query time per nodes returned, 2d sphere",fontsize=22)
+
+plt.show()
+
+plt.plot(x,results_haystack)
+font_size = 16
+plt.xlabel("Densities",fontsize=font_size)
+plt.ylabel("Time(ms)", fontsize=font_size)
+plt.tick_params(axis="both",labelsize=font_size)
+plt.title("Query time per nodes returned, haystack",fontsize=22)
+
 plt.show()

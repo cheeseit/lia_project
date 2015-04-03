@@ -39,14 +39,16 @@ for k,i in results.iteritems():
 
 print results
 print y
-x = [300000,500000,1000000,2000000]
-plt.plot(x,y)
+x = [1.8,3,6,12]
+ax = plt.plot(x,y)
+
 
 #make it nice
 font_size = 16
-plt.xlabel("Number of central points in the collection",fontsize=font_size)
+
+plt.xlabel("Number of coordinates in the collection * 10^6",fontsize=font_size)
 plt.ylabel("Number of documents searched", fontsize=font_size)
 plt.tick_params(axis="both",labelsize=font_size)
-plt.title("Average amount of documents searched per query",fontsize=font_size)
+plt.title("Average amount of documents searched per query",fontsize=22)
 
 plt.show()
